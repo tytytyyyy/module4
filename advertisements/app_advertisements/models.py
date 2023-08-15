@@ -29,13 +29,25 @@ class Advertisement(models.Model):
     @admin.display(description="дата создания")
     def created_date(self):
         from django.utils import timezone
-
         if self.created_at.date() == timezone.now().date():
             created_time = self.created_at.strftime("%H:%M:%S")
-            return format_html("<span style='color:green; font-weight:bold; '> сегодня в {}</span>", created_time)
-
+            return format_html(
+                "<span style='color:green; font-weight:bold; '> сегодня в {}</span>", 
+                created_time
+                )
         return self.created_at.strftime("%d.%m.%Y в %H:%M:%S")
 
+    @admin.display(description="дата изменения")
+    def updated_date(self):
+        from django.utils import timezone
+        if self.updated_at.date() == timezone.now().date():
+            updated_time = self.updated_at.strftime("%H:%M:%S")
+            return format_html(
+                "<span style='color:red; font-weight:bold; '> сегодня в {}</span>", 
+                updated_time
+                )
+        return self.updated_at.strftime("%d.%m.%Y в %H:%M:%S")
+    
     def __str__(self):
         return f"<Advertisement: Advertisement(id={self.id}, title={self.title}, price={self.price})>"
 
